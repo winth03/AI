@@ -1,9 +1,13 @@
 from transformers import pipeline
+from transformers.pipelines.conversational import Conversation
 
-model = pipeline('sentiment-analysis')
+pipe = pipeline('conversational', model='microsoft/DialoGPT-medium')
 
-print(model("Hello.")[0]['label'])
-print(model("I hate you.")[0]['label'])
-print("{:.2f}".format(model("12345")[0]['score'] * 100))
-
-
+prompt = input('You : ')
+convo = Conversation(prompt)
+while prompt != "bye":
+    if len(convo.generated_responses) != 0:
+        prompt = input('You : ')
+        convo.add_user_input(prompt)
+    response = pipe(convo)
+    print(response)
