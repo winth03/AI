@@ -1,6 +1,9 @@
-from scipy.io import loadmat
-import os
+from transformers import pipeline
 
-mnist_raw = loadmat("mats/mnist-original.mat")
+model = pipeline('sentiment-analysis')
 
-print(mnist_raw)
+print(model("Hello.")[0]['label'])
+print(model("I hate you.")[0]['label'])
+print("{:.2f}".format(model("12345")[0]['score'] * 100))
+
+
